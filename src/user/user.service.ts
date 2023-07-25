@@ -21,6 +21,15 @@ export class UserService {
     return this.userRepository.findOneBy({ name })
   }
 
+  async add(name: string) {
+    const query = this.userRepository.findOneBy({ name })
+
+    await this.userRepository.save({
+      ...query,
+      isHave: true,
+    })
+  }
+
   async create({ name, passwd }: UserDto) {
     if (await this.userRepository.findOneBy({ name }))
       return { message: 'already existed', status: 401 }

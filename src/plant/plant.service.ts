@@ -16,8 +16,14 @@ export class PlantService {
     return this.plantRepository.find()
   }
 
-  findOne(name: string): Promise<Plant> {
-    return this.plantRepository.findOneBy({ owner: name })
+  findOne(name: string) {
+    if (this.plantRepository.findOneBy({ owner: name }))
+      return { status: 401, data: {} }
+
+    return {
+      status: 200,
+      data: this.plantRepository.findOneBy({ owner: name }),
+    }
   }
 
   async create({ date, owner, type, status }: PlantDto) {
